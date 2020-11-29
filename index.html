@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+
+<head>
+    <script src="jquery-1.11.1/jquery.js"></script>
+    <script src="galleria-1.6.1/dist/galleria.js"></script>
+    <style type="text/css">
+        .galleria {
+            height: 400px;
+            /* Change the height to whatever you want */
+            width: 100%;
+            /* Optional: default is 100% */
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="galleria">
+    </div>
+    <script>
+        $(function() {
+            Galleria.loadTheme('galleria-1.6.1/dist/themes/twelve/galleria.twelve.min.js');
+            Galleria.configure({
+                imageCrop: false,
+            });
+            $.ajax({
+                url: "image_data.json",
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    Galleria.run('.galleria', {
+                        autoplay: 5000, // every 5 seconds
+                        responsive: true,
+                        height: 0.5,
+                        dataSource: data,
+                        maxVideoSize: 1300
+                    });
+                }
+            });
+            Galleria.ready(function() {
+                // keyboard navigation
+                this.attachKeyboard({
+                    right: this.next,
+                    left: this.prev,
+                });
+                // lazy loading thumbnails, in chunks, for performance
+                this.lazyLoadChunks(10)
+            });
+        });
+    </script>
+</body>
+
+</html>
